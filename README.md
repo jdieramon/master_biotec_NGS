@@ -29,3 +29,6 @@ BiocManager::install("Rsamtools") # <- manipulate SAM files
 BiocManager::install("Rsubread")  # <- quantify alignments
 BiocManager::install("DESeq2")    # <- differential gene expression
 ```
+
+## Material 
+  * Análisis expresion Diferencial RNA-Seq : [tabla muestras](sample_table.md)
