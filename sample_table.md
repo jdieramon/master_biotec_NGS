@@ -1,7 +1,7 @@
 ### Analisis Expresion Diferencial RNA-Seq. 
 
-Bioproject : PRJNA550078. 
-Publicacion : 2020-02-27. 
+Bioproject : PRJNA550078.   
+Publicacion : 2020-02-27.   
 
 |SampleID |      Description  |     Replicate | Millions of Spots | Biosample
 |---------|-------------------|---------------------|-------------|-------------|
