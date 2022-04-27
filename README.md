@@ -32,3 +32,24 @@ BiocManager::install("DESeq2")    # <- differential gene expression
 
 ## Material 
   * Análisis expresion Diferencial RNA-Seq : [tabla muestras](sample_table.md)
+
+## Descarga ficheros lecturas
+```
+download.file("https://www.dropbox.com/s/v06um7vt9ojdf42/NGS_MB_SRR9336468_1.fastq.gz?dl=1", 
+              destfile = "NGS_1MB_SRR9336468_1.fastq.gz")
+
+download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fastq.gz?dl=1", 
+              destfile = "NGS_1MB_SRR9336468_2.fastq.gz")
+````
+
+## Descarga ficheros secuencia genómica         
+```
+download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
+              destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")
+````
+
+## Descarga ficheros anotación genómica         
+```
+download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
+              destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")
+```
