@@ -33,14 +33,14 @@ BiocManager::install("DESeq2")    # <- differential gene expression
 ## Material 
   * Análisis expresion Diferencial RNA-Seq : [tabla muestras](sample_table.md)
   * European Nucleotide Archive  
-    [Run: SRR9336468](https://www.ebi.ac.uk/ena/browser/view/SRR9336468). 
-    [Run: SRR9336469](https://www.ebi.ac.uk/ena/browser/view/SRR9336469). 
-    [Run: SRR9336470](https://www.ebi.ac.uk/ena/browser/view/SRR9336470). 
-    [Run: SRR9336471](https://www.ebi.ac.uk/ena/browser/view/SRR9336471). 
-    [Run: SRR9336472](https://www.ebi.ac.uk/ena/browser/view/SRR9336472). 
-    [Run: SRR9336473](https://www.ebi.ac.uk/ena/browser/view/SRR9336473). 
-    [Run: SRR9336474](https://www.ebi.ac.uk/ena/browser/view/SRR9336474). 
-    [Run: SRR9336475](https://www.ebi.ac.uk/ena/browser/view/SRR9336475). 
+    [Run: SRR9336468](https://www.ebi.ac.uk/ena/browser/view/SRR9336468)  
+    [Run: SRR9336469](https://www.ebi.ac.uk/ena/browser/view/SRR9336469).  
+    [Run: SRR9336470](https://www.ebi.ac.uk/ena/browser/view/SRR9336470).   
+    [Run: SRR9336471](https://www.ebi.ac.uk/ena/browser/view/SRR9336471).   
+    [Run: SRR9336472](https://www.ebi.ac.uk/ena/browser/view/SRR9336472).   
+    [Run: SRR9336473](https://www.ebi.ac.uk/ena/browser/view/SRR9336473).   
+    [Run: SRR9336474](https://www.ebi.ac.uk/ena/browser/view/SRR9336474).   
+    [Run: SRR9336475](https://www.ebi.ac.uk/ena/browser/view/SRR9336475).   
     [Run: SRR9336476](https://www.ebi.ac.uk/ena/browser/view/SRR9336476). 
     
 
