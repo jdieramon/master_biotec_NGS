@@ -55,8 +55,8 @@ download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fas
 
 ## Descarga ficheros secuencia genómica         
 ```
-download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
-              destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")
+download.file("https://www.dropbox.com/s/6un05pdvx2join5/Saccharomyces_cerevisiae_genome.fa.gz?dl=1", 
+              destfile = "Saccharomyces_cerevisiae_genome.fa.gz")
 ````
 
 ## Descarga ficheros anotación genómica         
