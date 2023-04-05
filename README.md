@@ -24,6 +24,7 @@ BiocManager::valid()
 
 ## Instalación paquetes Bioconductor
 ```
+BiocManager::install("ShortRead")  # <- manipulate FASTQ files
 BiocManager::install("Rbowtie2")  # <- align FASTQ files
 BiocManager::install("Rsamtools") # <- manipulate SAM files
 BiocManager::install("Rsubread")  # <- quantify alignments
