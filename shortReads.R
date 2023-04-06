@@ -33,7 +33,7 @@ dir.create("results")
 
 # Download files 
 #https://www.ncbi.nlm.nih.gov/data-hub/genome/GCF_000146045.2/
-download.file("https://www.dropbox.com/s/4ft480eky7kghzw/Saccharomyces_cerevisiae_genome.fa.gz?dl=01", 
+download.file("https://www.dropbox.com/s/4ft480eky7kghzw/Saccharomyces_cerevisiae_genome.fa.gz?dl=1", 
               destfile = "data/Saccharomyces_cerevisiae_genome.fa.gz")
 
 #https://www.ncbi.nlm.nih.gov/sra/?term=SRR11397715
