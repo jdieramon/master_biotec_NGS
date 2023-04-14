@@ -67,6 +67,8 @@ download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fas
               destfile = "1M_SRR9336468_2.fastq.gz")
 ````
 
+&nbsp;
+
 ## Mapping Reads
    
  * STEP 1: Create genome index for bowtie2 with `bowtie2_build` 
