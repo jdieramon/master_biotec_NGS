@@ -45,26 +45,27 @@ BiocManager::install("DESeq2")    # <- differential gene expression
     [Run: SRR9336476](https://www.ebi.ac.uk/ena/browser/view/SRR9336476) 
     
 
-## Descarga ficheros lecturas
-```
-download.file("https://www.dropbox.com/s/v06um7vt9ojdf42/NGS_MB_SRR9336468_1.fastq.gz?dl=1", 
-              destfile = "NGS_1MB_SRR9336468_1.fastq.gz")
-
-download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fastq.gz?dl=1", 
-              destfile = "NGS_1MB_SRR9336468_2.fastq.gz")
-````
 
 ## Descarga ficheros secuencia genómica         
 ```
-download.file("https://www.dropbox.com/s/6un05pdvx2join5/Saccharomyces_cerevisiae_genome.fa.gz?dl=1", 
+download.file("https://www.dropbox.com/s/4ft480eky7kghzw/Saccharomyces_cerevisiae_genome.fa.gz?dl=1", 
               destfile = "Saccharomyces_cerevisiae_genome.fa.gz")
 ````
 
 ## Descarga ficheros anotación genómica         
 ```
 download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
-              destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")
+              destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")              
 ```
+
+## Descarga ficheros lecturas
+```
+download.file("https://www.dropbox.com/s/v06um7vt9ojdf42/NGS_MB_SRR9336468_1.fastq.gz?dl=1", 
+              destfile = "1M_SRR9336468_1.fastq.gz")
+
+download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fastq.gz?dl=1", 
+              destfile = "1M_SRR9336468_2.fastq.gz")
+````
 
 ## Mapping Reads
    
