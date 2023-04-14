@@ -74,3 +74,10 @@ download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fas
  * STEP 3: Convert SAM files into BAM (and indexes .bai) with `asBam` 
 
 [code](mappingReads.R)
+
+## Differential Expression Analysis
+  
+  * STEP 1: Create genome index for bowtie2 with `bowtie2_build`  
+  * STEP 2: Align FASTQ files against indexed genome with `bowtie2` 
+  * STEP 3: Convert SAM files into BAM (and indexes .bai) with `asBam` 
+  * 
