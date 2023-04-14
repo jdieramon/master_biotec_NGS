@@ -65,3 +65,11 @@ download.file("https://www.dropbox.com/s/6un05pdvx2join5/Saccharomyces_cerevisia
 download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
               destfile = "Saccharomyces_cerevisiae_genome.gff3.gz")
 ```
+
+## Mapping Reads
+   
+ * STEP 1: Create genome index for bowtie2 with `bowtie2_build` 
+ * STEP 2: Align FASTQ files against indexed genome with `bowtie2` 
+ * STEP 3: Convert SAM files into BAM (and indexes .bai) with `asBam` 
+
+[code](mappingReads.R)
