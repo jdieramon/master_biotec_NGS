@@ -76,8 +76,14 @@ download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fas
 [code](mappingReads.R)
 
 ## Differential Expression Analysis
+
+Paper : "Physiological responses of Saccharomyces cerevisiae to industrially relevant conditions: Slow growth, low pH, and high CO2 levels". Hakkaart X, Liu Y, Hulst M, El Masoudi A, Peuscher E, Pronk J, van Gulik W, Daran-Lapujade P. Biotechnol Bioeng. 2020 Mar;117(3):721-735. doi: 10.1002/bit.27210. [Epub 2020 Jan 22](https://www.ncbi.nlm.nih.gov/pubmed/31654410).
+
+[Sample table](sample_table.md)
+
   
   * STEP 1: Create genome index for bowtie2 with `bowtie2_build`  
   * STEP 2: Align FASTQ files against indexed genome with `bowtie2` 
   * STEP 3: Convert SAM files into BAM (and indexes .bai) with `asBam` 
-  * 
+  * STEP 4: Create metadata file for the *Saccharomyces* count matrix
+  * STEP 5 : Quantify *genes* with `featureCounts`
