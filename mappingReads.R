@@ -65,7 +65,7 @@ list.files()
 
 
 # Uncompress genome fastq gz files with "gunzip"
-#Rsamtools::gunzip("Saccharomyces_cerevisiae_genome.gff3.gz", remove = FALSE)
+#R.utils::gunzip("Saccharomyces_cerevisiae_genome.gff3.gz", remove = FALSE)
 system("time gunzip -k data/Saccharomyces_cerevisiae_genome.fa.gz")
 system("time gunzip -k data/Saccharomyces_cerevisiae_genome.gff3.gz")
 
