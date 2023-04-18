@@ -16,7 +16,7 @@
 
 
 # Install R packages (from CRAN):
-install.packages("BiocManager").   # <- Bioconductor manager
+install.packages("BiocManager")   # <- Bioconductor manager
 #install.packages("R.utils")       # <- uncompress *.gz files
 
 # Install R packages (from Bioconductor):
