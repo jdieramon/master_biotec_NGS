@@ -90,4 +90,7 @@ Paper : "Physiological responses of Saccharomyces cerevisiae to industrially rel
   * STEP 2: Align FASTQ files against indexed genome with `bowtie2` 
   * STEP 3: Convert SAM files into BAM (and indexes .bai) with `asBam` 
   * STEP 4: Create metadata file for the *Saccharomyces* count matrix
-  * STEP 5 : Quantify *genes* with `featureCounts`
+  * STEP 5 : Quantify *genes* with `featureCounts`. 
+  * STEP 6 : Prepare data for the `DESeq2` workflow. 
+  * STEP 7 : Create a DESeq2 object with `DESeqDataSetFromMatrix` 
+  * 
