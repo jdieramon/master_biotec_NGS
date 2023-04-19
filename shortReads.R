@@ -42,7 +42,7 @@ download.file(url = "https://www.dropbox.com/s/svch71j19zfhntm/SRR11397715.fastq
 
 
 # Uncompress fasta.gz & fastq.gz files
-#Rsamtools::gunzip("SRR11397715.fastq.gz", remove = FALSE)
+#R.utils::gunzip("SRR11397715.fastq.gz", remove = FALSE)
 system("time gunzip -k data/SRR11397715.fastq.gz")
 system("time gunzip -k data/Saccharomyces_cerevisiae_genome.fa.gz")
 
