@@ -38,17 +38,17 @@ library(Rsamtools)
 
 
 # Download data ----------------------------------------------------------------
-file.exists("NGS_MB_SRR9336468_1.fastq.gz")
-file.exists("NGS_MB_SRR9336468_2.fastq.gz")
+file.exists("1M_SRR9336468_1.fastq.gz")
+file.exists("1M_SRR9336468_2.fastq.gz")
 file.exists("Saccharomyces_cerevisiae_genome.gff3.gz")
 file.exists("Saccharomyces_cerevisiae_genome.fa.gz")
 
 
 download.file("https://www.dropbox.com/s/v06um7vt9ojdf42/NGS_MB_SRR9336468_1.fastq.gz?dl=1", 
-              destfile = "data/NGS_1MB_SRR9336468_1.fastq.gz")
+              destfile = "data/1M_SRR9336468_1.fastq.gz")
 
 download.file("https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_2.fastq.gz?dl=1", 
-              destfile = "data/NGS_1MB_SRR9336468_2.fastq.gz")
+              destfile = "data/1M_SRR9336468_2.fastq.gz")
 
 download.file("https://www.dropbox.com/s/qtaret1hrbvw2xb/Saccharomyces_cerevisiae_genome.gff3.gz?dl=1", 
               destfile = "data/Saccharomyces_cerevisiae_genome.gff3.gz")
@@ -100,12 +100,12 @@ file.show("data/chromosomes/Saccharomyces_cerevisiae_genome.gff3")
 system("less -S data/chromosomes/Saccharomyces_cerevisiae_genome.gff3")
 
 # Look at one of the two *.fastq files
-system("wc -l data/fastq/NGS_1MB_SRR9336468_1.fastq")
-system("less -S fastq/NGS_1MB_SRR9336468_1.fastq")
+system("wc -l data/fastq/1M_SRR9336468_1.fastq")
+system("less -S fastq/1M_SRR9336468_1.fastq")
 
 # Look at the two reads from the same cDNA fragment 
-system("head -n 4 data/fastq/NGS_1MB_SRR9336468_1.fastq")
-system("head -n 4 data/fastq/NGS_1MB_SRR9336468_2.fastq")
+system("head -n 4 data/fastq/1M_SRR9336468_1.fastq")
+system("head -n 4 data/fastq/1M_SRR9336468_2.fastq")
 
 
 
@@ -133,8 +133,8 @@ indexFa("data/chromosomes/Saccharomyces_cerevisiae_genome.fa") # crea el .fai
 # STEP 2: Align FASTQ files against indexed genome with "bowtie2":
 bowtie2(bt2Index = "data/chromosomes/Scerevisiae_genome",
         samOutput = "SRR9336468.sam",
-        seq1 = "data/fastq/NGS_1MB_SRR9336468_1.fastq",
-        seq2 = "data/fastq/NGS_1MB_SRR9336468_2.fastq",
+        seq1 = "data/fastq/1M_SRR9336468_1.fastq",
+        seq2 = "data/fastq/1M_SRR9336468_2.fastq",
         overwrite = TRUE,
         "--threads=3")
 
