@@ -191,7 +191,6 @@ aln35 = scanBam(dest)
 #names(aln[[1]])
 aln[[1]]$seq[1:10]
 aln[[1]]$mapq[1:10]
-summary(aln[[1]]$mapq)
 
 summary(aln[[1]]$mapq)
 summary(aln35[[1]]$mapq)
