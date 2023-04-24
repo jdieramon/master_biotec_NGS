@@ -131,8 +131,10 @@ indexFa("data/chromosomes/Saccharomyces_cerevisiae_genome.fa") # crea el .fai
 
 
 # STEP 2: Align FASTQ files against indexed genome with "bowtie2":
+dir.create("bam")
+
 bowtie2(bt2Index = "data/chromosomes/Scerevisiae_genome",
-        samOutput = "SRR9336468.sam",
+        samOutput = "bam/SRR9336468.sam",
         seq1 = "data/fastq/1M_SRR9336468_1.fastq",
         seq2 = "data/fastq/1M_SRR9336468_2.fastq",
         overwrite = TRUE,
@@ -142,12 +144,12 @@ bowtie2(bt2Index = "data/chromosomes/Scerevisiae_genome",
 # STEP 3 : Convert SAM files into BAM (and indexes .bai) with "asBam"
 #BiocManager::install("Rsamtools")
 #library(Rsamtools)
-asBam("SRR9336468.sam")
+asBam("bam/SRR9336468.sam")
 
 
 # make some tidy
 # una vez se tiene el BAM se puede borrar el SAM porque son los mas prescindibles y los que mas ocupan
-file.remove("SRR9336468.sam")                  
+file.remove("bam/SRR9336468.sam")                  
 
 
 
