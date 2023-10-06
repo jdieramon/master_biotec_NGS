@@ -488,12 +488,14 @@ writeFasta(object = fqsample150, file = &quot;results/reads150.fastq&quot;)</cod
 <li>FFFF_2.fastq.gz</li>
 </ul>
 <p>Además, trabajaremos con un formato nuevo de fichero (<a href="http://www.ensembl.org/info/website/upload/gff3.html">.gff3</a>) que contiene información de anotación genómica.</p>
+<p> </p>
 <p>Formatos ficheros :</p>
 <ul>
 <li>.FASTA (.FA,.FNA): biological sequences (eg. chromosomes)</li>
 <li>.FASTQ (.FQ): short-reads (eg. illumina)</li>
 <li>.GFF (.GFF3, .GTF): genomic elements coordinates (eg. genes)</li>
 </ul>
+<p> </p>
 <p>Para completar este módulo se realizarán las siguientes tareas :</p>
 <ul>
 <li>descarga anotación genoma <em>S. cerevisiae</em> (<code>.gff3</code>)</li>
@@ -502,22 +504,43 @@ writeFasta(object = fqsample150, file = &quot;results/reads150.fastq&quot;)</cod
 <li>alineamiento BLAST</li>
 <li>genome mapping alignment
 <ul>
-<li>paso1</li>
-<li>paso2</li>
+<li>index the reference genome<br />
+</li>
+<li>align fastq files<br />
+</li>
+<li>convert <code>.sam</code> files into <code>.bam</code> files<br />
+</li>
 </ul></li>
+<li>IGV : visual exploration of genomic data<br />
+</li>
+<li>filtering reads by mapping quality</li>
+</ul>
+<p>Mapeador : Bowtie2</p>
+<ul>
+<li><a href="https://www.nature.com/articles/nmeth.1923">publicación</a></li>
+<li>Bowtie2 software <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">homepage</a></li>
+</ul>
+<p>Visualización datos genómicos : IGV</p>
+<ul>
+<li><a href="https://igv.org/">homepage</a></li>
+<li><a href="https://igv.org/doc/desktop/">aplicación escritorio</a></li>
 </ul>
 <p> </p>
 <p>Instalación del paquete que usaremos en este módulo.</p>
 <pre><code>BiocManager::install(&quot;Rbowtie2&quot;)        # &lt;- align FASTQ files
 BiocManager::install(&quot;Rsamtools&quot;)       # &lt;- manipulate SAM files</code></pre>
 <p>Una vez instalados los paquetes necesarios para este módulo, cargamos las librerías.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dependencies</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rbowtie2)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rsamtools)</span></code></pre></div>
 <div id="descarga-ficheros-1" class="section level3">
 <h3>Descarga ficheros</h3>
 <p>Estructura del proyecto</p>
-<pre><code># check folders - if FALSE, create the folders
-dir.exists(&quot;fastq&quot;)     
-dir.exists(&quot;genome&quot;)
-dir()                   # see files and folders in the indicated path)</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check folders - if FALSE, create the folders</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.exists</span>(<span class="st">&quot;fastq&quot;</span>)     </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.exists</span>(<span class="st">&quot;genome&quot;</span>)</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.exists</span>(<span class="st">&quot;bam&quot;</span>)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dir</span>()                   <span class="co"># see files and folders in the indicated path)</span></span></code></pre></div>
 <p>Descarga ficheros secuencia genómica</p>
 <pre><code># download if the file is not already in the folder
 if (!file.exists(&quot;genome/Saccharomyces_cerevisiae_genome.fa&quot;))
@@ -535,24 +558,84 @@ download.file(&quot;https://www.dropbox.com/s/kgxfth8ra675ccu/NGS_MB_SRR9336468_
 </code></pre>
 <p>Descompresión de las secuencias fasta.gz y fastq.gz</p>
 <pre><code># Uncompress fasta.gz &amp; fastq.gz files
-#R.utils::gunzip(&quot;genome/Saccharomyces_cerevisiae_genome.fa.gz&quot;, remove=TRUE)
+R.utils::gunzip(&quot;genome/Saccharomyces_cerevisiae_genome.fa.gz&quot;, remove=TRUE)
 R.utils::gunzip(&quot;genome/Saccharomyces_cerevisiae_genome.gff3.gz&quot;, remove=TRUE)
 R.utils::gunzip(&quot;fastq/1M_SRR9336468_1.fastq.gz&quot;, remove=TRUE)
 R.utils::gunzip(&quot;fastq/1M_SRR9336468_2.fastq.gz&quot;, remove=TRUE)</code></pre>
 <p>En una consola LINUX podemos observar el fichero de anotación <code>gff3</code> y los ficheros <code>fastq</code>.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#system(&quot;grep -v &#39;#&#39; genes/Saccharomyces_cerevisiae_genome.gff3&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Total number of reads ?</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(<span class="st">&quot;wc -l fastq/1M_SRR9336468_1.fastq&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Look at the two reads from the same cDNA fragment</span></span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(<span class="st">&quot;head -n 4 fastq/1M_SRR9336468_1.fastq&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co">#system(&quot;grep -v &#39;#&#39; genes/Saccharomyces_cerevisiae_genome.gff3&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Total number of reads ?</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(<span class="st">&quot;wc -l fastq/1M_SRR9336468_1.fastq&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Look at the two reads from the same cDNA fragment</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(<span class="st">&quot;head -n 4 fastq/1M_SRR9336468_1.fastq&quot;</span>)</span></code></pre></div>
 </div>
 <div id="blast-genome" class="section level3">
 <h3>BLAST genome</h3>
 <p>A modo ilustrativo, vamos a alinear la primera secuencia de cada fichero contra la secuencia de referencia del genoma de <em>Saccharomices</em>.</p>
 <p>Comenzaremos con la secuencia <code>@SRR9336468.1 1/2</code> y analizaremos en el resultado del BLAST el sitio único del alineamiento o mapeo, las coordenadas del intervalo, la coordenada de la primera base de la secuencia y la orientación de la cadena.</p>
-<p>Del mismo modo, seguiremos con la secuencia <code>@SRR9336468.1 1/1</code>,</p>
+<p>Del mismo modo, seguiremos con la secuencia <code>@SRR9336468.1 1/1</code>.</p>
 <p> </p>
 <p>Run blast genome : <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch&amp;USER_FORMAT_DEFAULTS=on&amp;SET_SAVED_SEARCH=true&amp;PAGE=MegaBlast&amp;PROGRAM=blastn&amp;GAPCOSTS=0%200&amp;MATCH_SCORES=1,-2&amp;BLAST_SPEC=Assembly&amp;DATABASE=genomic/559292/GCF_000146045.2&amp;BLAST_PROGRAMS=megaBlast&amp;MAX_NUM_SEQ=100&amp;SHORT_QUERY_ADJUST=on&amp;EXPECT=0.05&amp;WORD_SIZE=28&amp;REPEATS=4932&amp;TEMPLATE_TYPE=0&amp;TEMPLATE_LENGTH=0&amp;FILTER=L&amp;FILTER=R&amp;FILTER=m&amp;EQ_MENU=Enter%20organism%20name%20or%20id--completions%20will%20be%20suggested&amp;PROG_DEFAULTS=on&amp;SHOW_OVERVIEW=on&amp;SHOW_LINKOUT=on&amp;ALIGNMENT_VIEW=Pairwise&amp;MASK_CHAR=2&amp;MASK_COLOR=1&amp;GET_SEQUENCE=on&amp;NUM_OVERVIEW=100&amp;DESCRIPTIONS=100&amp;ALIGNMENTS=100&amp;FORMAT_OBJECT=Alignment&amp;FORMAT_TYPE=HTML">saccharomices</a></p>
+</div>
+<div id="genome-mapping-alignment" class="section level3">
+<h3>Genome mapping alignment</h3>
+<p>Index the reference genome</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # use the indexer `bowtie2_build`</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bowtie2_build</span>(<span class="at">references =</span> <span class="st">&quot;genome/Saccharomyces_cerevisiae_genome.fa&quot;</span>,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">bt2Index =</span> <span class="st">&quot;genome/Scerevisiae_genome&quot;</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # create `.fai` file with `indexFa` from `Rsamtools`</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">indexFa</span>(<span class="st">&quot;data/chromosomes/Saccharomyces_cerevisiae_genome.fa&quot;</span>)</span></code></pre></div>
+<p>Align <code>.fastq</code> files against the indexed genome</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # align fastq files against the genome with `bowtie2`</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bowtie2</span>(<span class="at">bt2Index =</span> <span class="st">&quot;genome/Scerevisiae_genome&quot;</span>,</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">samOutput =</span> <span class="st">&quot;bam/SRR9336468.sam&quot;</span>,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">seq1 =</span> <span class="st">&quot;fastq/1M_SRR9336468_1.fastq&quot;</span>,</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">seq2 =</span> <span class="st">&quot;fastq/1M_SRR9336468_2.fastq&quot;</span>,</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">overwrite =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;--threads=3&quot;</span>)</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Time difference of 2.249662 mins</span></span></code></pre></div>
+<p>Convert <code>.sam</code> files into <code>bam</code> files (more compact and indexed)</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert SAM file into BAM file (and indexes .bai) with &quot;asBam&quot;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">asBam</span>(<span class="st">&quot;bam/SRR9336468.sam&quot;</span>)</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Time difference of 1.345935 mins </span></span></code></pre></div>
+<p>Una vez se tiene el <code>.bam</code>, el fichero <code>.sam</code>se puede borrar ya que los ficheros <code>.sam</code> son los más prescindibles y los que más ocupan.</p>
+<pre><code>file.remove(&quot;bam/SRR9336468.sam&quot;)  </code></pre>
+</div>
+<div id="igv" class="section level3">
+<h3>IGV</h3>
+<ul>
+<li>Load genome : Genome / Local File / chromosomes / .fa + .fai<br />
+</li>
+<li>Load genes : Tracks / Local File (gff3)<br />
+</li>
+<li>View options<br />
+</li>
+<li>Load reads : Tracks / Load File / select bam + index (bai)</li>
+</ul>
+</div>
+<div id="filtering-reads-by-mapping-quality" class="section level3">
+<h3>Filtering reads by mapping quality</h3>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>bamfile <span class="ot">&lt;-</span> <span class="fu">BamFile</span>(<span class="st">&quot;bam/SRR9336468.bam&quot;</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>bamfile</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">seqinfo</span>(bamfile)</span></code></pre></div>
+<p>Set the filter condition</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # build the filtered : .bam + .bai files </span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>param <span class="ot">=</span> <span class="fu">ScanBamParam</span>(<span class="at">mapqFilter =</span> <span class="dv">35</span>)     <span class="co"># min quality = 35 * </span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>dest <span class="ot">=</span> <span class="fu">filterBam</span>(<span class="at">file =</span> bamfile, <span class="at">destination =</span> <span class="st">&quot;bam/mapq.bam&quot;</span>, <span class="at">param =</span> param) </span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="co"># en el próximo módulo veremos que también podemos controlar la calidad del alineamiento `Deseq2` con la `featureCounts` y la variable &#39;minMQS&#39;</span></span></code></pre></div>
+<p>Count number of alignments</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>bamq <span class="ot">&lt;-</span> <span class="fu">BamFile</span>(<span class="st">&quot;bam/mapq.bam&quot;</span>)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">countBam</span>(bamfile)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">countBam</span>(bamq)</span></code></pre></div>
+<p>#scanBam generates a list (length = 1) with 13 elements aln &lt;- scanBam(bamfile) aln35 = scanBam(bamq)</p>
+<p>#names(aln[[1]]) aln[[1]]<span class="math inline">\(seq[1:10] aln[[1]]\)</span>mapq[1:10] summary(aln[[1]]$mapq)</p>
+<p>summary(aln[[1]]<span class="math inline">\(mapq) summary(aln35[[1]]\)</span>mapq)</p>
+<p>sum(aln[[1]]<span class="math inline">\(mapq &lt; 35, na.rm = TRUE) sum(aln35[[1]]\)</span>mapq &lt; 35, na.rm = TRUE)</p>
 </div>
 </div>
 
