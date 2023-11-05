@@ -37,7 +37,7 @@ download.file("https://www.dropbox.com/s/4ft480eky7kghzw/Saccharomyces_cerevisia
               destfile = "data/Saccharomyces_cerevisiae_genome.fa.gz")
 
 #https://www.ncbi.nlm.nih.gov/sra/?term=SRR11397715
-download.file(url = "https://www.dropbox.com/s/svch71j19zfhntm/SRR11397715.fastq.gz?dl=1", 
+download.file(url = "https://www.dropbox.com/scl/fi/uf3c6zbj0mndzvtznqkme/SRR11397715.fastq.gz?rlkey=8bfvh2o3i51lp7vjt9mvckgov&dl=1", 
               destfile = "data/SRR11397715.fastq.gz")
 
 
