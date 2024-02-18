@@ -47,7 +47,11 @@ write.csv()
 # Load object 
 read.csv()
 
-
+# Timing code 
+start_time <- Sys.time()
+ # do something
+end_time <- Sys.time()
+end_time - start_time
 
 
 
